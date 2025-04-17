@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results - Movie Finder</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nav_.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <img width="500" height="95" src="https://pickamovieforme.b-cdn.net/wp-content/uploads/2020/09/logo_c.png" class="custom-logo" alt="PickAMovieForMe.com">
+        </div>
+        <ul>
+            <li class="search-container">
+                <form action="{{ url_for('search_movies') }}" method="GET" class="search-form">
+                    <input type="text" name="query" placeholder="Search movies..." value="{{ query }}" class="search-input">
+                    <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </form>
+            </li>
+            <li><a href="{{ url_for('hello_world') }}">Home</a></li>
+            <li><a href="{{ url_for('watchlist') }}"><i class="fa-regular fa-clock"></i> Watch List</a></li>
+            <li><a href="{{ url_for('login') }}">Login</a></li>
+        </ul>
+    </nav>
+
+    <main class="search-results-container">
+        <h1>Search Results for "{{ query }}"</h1>
+        
+        {% if movies %}
+        <div class="movie-grid">
+            {% for movie in movies %}
+            <div class="movie-card">
+                {% if movie.poster_path %}
+                <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}">
+                {% else %}
+                <div class="no-poster">
+                    <i class="fas fa-film"></i>
+                    <span>No poster available</span>
+                </div>
+                {% endif %}
+                <div class="movie-info">
+                    <h3>{{ movie.title }}</h3>
+                    <p class="rating">⭐ {{ movie.vote_average|round(1) }}/10</p>
+                    <p class="release-date">{{ movie.release_date }}</p>
+                    <div class="movie-actions">
+                        <button class="add-to-watchlist" onclick="addToWatchlist(this, '{{ movie.id }}')">
+                            <i class="fas fa-plus"></i> Add to Watchlist
+                        </button>
+                        <a href="{{ url_for('movie_details', movie_id=movie.id) }}" class="details-btn">
+                            View Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="no-results">
+            <i class="fas fa-search"></i>
+            <p>No movies found matching "{{ query }}"</p>
+            <p class="suggestion">Try different keywords or check the spelling</p>
+            <form action="{{ url_for('search_movies') }}" method="GET" class="search-form" onsubmit="return validateSearch(this);">
+                <input type="text" name="query" value="{{ query }}" class="search-input" required minlength="1">
+                <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </form>
+            <a href="{{ url_for('hello_world') }}" class="back-btn">Back to Home</a>
+        </div>
+        {% endif %}
+    </main>
+
+    <script>
+        // Add the same addToWatchlist function from index.html
+        async function addToWatchlist(button, movieId) {
+            try {
+                button.disabled = true;
+                
+                const response = await fetch('/api/watchlist/add', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ movie_id: parseInt(movieId) })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    button.innerHTML = '<i class="fas fa-check"></i> Added';
+                    button.classList.add('added');
+                    showNotification('Movie added to watchlist!', 'success');
+                } else {
+                    button.disabled = false;
+                    showNotification(data.error || 'Failed to add to watchlist', 'error');
+                }
+            } catch (error) {
+                button.disabled = false;
+                console.error('Error:', error);
+                showNotification('Failed to add to watchlist', 'error');
+            }
+        }
+
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html> 

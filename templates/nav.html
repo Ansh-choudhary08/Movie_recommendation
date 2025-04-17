@@ -1,0 +1,65 @@
+<nav>
+    <div class="logo">
+        <a href="{{ url_for('hello_world') }}">
+            <img width="500" height="95" src="https://pickamovieforme.b-cdn.net/wp-content/uploads/2020/09/logo_c.png" class="custom-logo" alt="PickAMovieForMe.com">
+        </a>
+    </div>
+    <ul>
+        <li class="search-container">
+            <form action="{{ url_for('search_movies') }}" method="GET" class="search-form" onsubmit="return validateSearch(this);">
+                <input type="text" name="query" placeholder="Search movies..." class="search-input" required minlength="1">
+                <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </form>
+        </li>
+        <li class="dropdown">
+            <a href="#" class="dropbtn">Top Actor   |</a>
+            <div class="dropdown-content">
+                <a href="{{ url_for('actor_movies', actor_id=3223) }}">Robert Downey Jr.</a>
+                <a href="{{ url_for('actor_movies', actor_id=6193) }}">Leonardo DiCaprio</a>
+                <a href="{{ url_for('actor_movies', actor_id=1892) }}">Matt Damon</a>
+                <a href="{{ url_for('actor_movies', actor_id=2037) }}">Christian Bale</a>
+                <a href="{{ url_for('actor_movies', actor_id=287) }}">Brad Pitt</a>
+                <a href="{{ url_for('actor_movies', actor_id=192) }}">Morgan Freeman</a>
+                <a href="{{ url_for('actor_movies', actor_id=31) }}">Tom Hanks</a>
+                <a href="{{ url_for('actor_movies', actor_id=5292) }}">Denzel Washington</a>
+                <a href="{{ url_for('actor_movies', actor_id=1158) }}">Al Pacino</a>
+                <a href="{{ url_for('actor_movies', actor_id=380) }}">Robert De Niro</a>
+            </div>
+        </li>
+        <li class="dropdown">
+            <a href="#" class="dropbtn">Top Genre   |</a>
+            <div class="dropdown-content">
+                <a href="{{ url_for('genre_movies', genre_id=28) }}">Action</a>
+                <a href="{{ url_for('genre_movies', genre_id=12) }}">Adventure</a>
+                <a href="{{ url_for('genre_movies', genre_id=16) }}">Animation</a>
+                <a href="{{ url_for('genre_movies', genre_id=35) }}">Comedy</a>
+                <a href="{{ url_for('genre_movies', genre_id=80) }}">Crime</a>
+                <a href="{{ url_for('genre_movies', genre_id=18) }}">Drama</a>
+                <a href="{{ url_for('genre_movies', genre_id=14) }}">Fantasy</a>
+                <a href="{{ url_for('genre_movies', genre_id=27) }}">Horror</a>
+                <a href="{{ url_for('genre_movies', genre_id=9648) }}">Mystery</a>
+                <a href="{{ url_for('genre_movies', genre_id=10749) }}">Romance</a>
+                <a href="{{ url_for('genre_movies', genre_id=878) }}">Sci-Fi</a>
+                <a href="{{ url_for('genre_movies', genre_id=53) }}">Thriller</a>
+            </div>
+        </li>
+        <li class="dropdown">
+            <a href="#" class="dropbtn">Trending   |</a>
+            <div class="dropdown-content">
+                <a href="{{ url_for('trending_movies', time_window='day') }}">Today</a>
+                <a href="{{ url_for('trending_movies', time_window='week') }}">This Week</a>
+            </div>
+        </li>
+        <li><a href="{{ url_for('watchlist') }}"><i class="fa-regular fa-clock"></i> Watch List</a></li>
+        {% if current_user.is_authenticated %}
+            <li class="user-menu">
+                <span class="username">{{ current_user.username }}</span>
+                <a href="{{ url_for('logout') }}" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </li>
+        {% else %}
+            <li><a href="{{ url_for('login') }}">Login</a></li>
+        {% endif %}
+    </ul>
+</nav> 

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found - Movie Finder</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nav_.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    {% include 'nav.html' %}
+    
+    <div class="error-container">
+        <i class="fas fa-film" style="font-size: 4rem; color: #e50914; margin-bottom: 2rem;"></i>
+        <h1>404 - Page Not Found</h1>
+        <p>The page you're looking for doesn't exist.</p>
+        <a href="{{ url_for('hello_world') }}" class="back-btn">
+            <i class="fas fa-home"></i> Return to Home
+        </a>
+    </div>
+</body>
+</html> 

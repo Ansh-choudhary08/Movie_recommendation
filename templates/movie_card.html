@@ -1,0 +1,23 @@
+<div class="movie-card">
+    {% if movie.poster_path %}
+    <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}">
+    {% else %}
+    <div class="no-poster">
+        <i class="fas fa-film"></i>
+        <span>No poster available</span>
+    </div>
+    {% endif %}
+    <div class="movie-info">
+        <h3>{{ movie.title }}</h3>
+        <p class="rating">⭐ {{ movie.vote_average|round(1) }}/10</p>
+        <p class="release-date">{{ movie.release_date }}</p>
+        <div class="movie-actions">
+            <button class="add-to-watchlist" onclick="addToWatchlist(this, '{{ movie.id }}')">
+                <i class="fas fa-plus"></i> Add to Watchlist
+            </button>
+            <a href="{{ url_for('movie_details', movie_id=movie.id) }}" class="details-btn">
+                <i class="fas fa-info-circle"></i> View Details
+            </a>
+        </div>
+    </div>
+</div> 

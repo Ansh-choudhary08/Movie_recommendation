@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ actor.name }} - Movie Finder</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nav_.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <!-- Include the same navigation as other pages -->
+    {% include 'nav.html' %}
+
+    <main class="actor-container">
+        <div class="actor-header">
+            <div class="actor-profile">
+                {% if actor.profile_path %}
+                <img src="https://image.tmdb.org/t/p/w300{{ actor.profile_path }}" alt="{{ actor.name }}">
+                {% else %}
+                <div class="no-photo">No photo available</div>
+                {% endif %}
+                <div class="actor-info">
+                    <h1>{{ actor.name }}</h1>
+                    {% if actor.birthday %}
+                    <p>Born: {{ actor.birthday }}</p>
+                    {% endif %}
+                    {% if actor.place_of_birth %}
+                    <p>From: {{ actor.place_of_birth }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% if actor.biography %}
+            <div class="actor-bio">
+                <h2>Biography</h2>
+                <p>{{ actor.biography }}</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="actor-movies">
+            <h2>Known For</h2>
+            <div class="movie-grid">
+                {% for movie in movies %}
+                <!-- Use the same movie card template as other pages -->
+                {% include 'movie_card.html' %}
+                {% endfor %}
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Include the same JavaScript functions as other pages
+    </script>
+</body>
+</html> 

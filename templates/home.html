@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Finder - Home</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home_page.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <section>
+        <nav>
+            <div class="logo">
+                <img width="500" height="95" src="https://pickamovieforme.b-cdn.net/wp-content/uploads/2020/09/logo_c.png" class="custom-logo" alt="PickAMovieForMe.com">
+            </div>
+        </nav>
+        <div class="main-content">
+            <div class="hero-section">
+                <h1>Welcome to Movie Finder</h1>
+                <p>Your ultimate destination for discovering the perfect movie</p>
+                <div class="auth-buttons">
+                    <button class="login-btn"><a href="{{ url_for('login') }}">Login</a></button>
+                    <button class="register-btn"><a href="{{ url_for('register') }}">Register</a></button>
+                </div>
+            </div>
+            
+            <div class="features">
+                <div class="feature-card">
+                    <i class="fas fa-search"></i>
+                    <h2>Discover Movies</h2>
+                    <p>Find movies based on your mood, genre, or preferences</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-star"></i>
+                    <h2>Rate & Review</h2>
+                    <p>Share your thoughts and see what others think</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-bookmark"></i>
+                    <h2>Create Watchlist</h2>
+                    <p>Save movies to watch later and track what you've seen</p>
+                    <a href="{{ url_for('watchlist') }}">Go to Watchlist</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html> 
