@@ -1064,3 +1064,57 @@ nav a.active {
 .logout-btn i {
     font-size: 0.9rem;
 }
+/* Responsive Navigation */
+@media (max-width: 900px) {
+    section nav ul {
+        flex-direction: column;
+        align-items: flex-start;
+        background: rgba(27, 26, 26, 0.98);
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        display: none;
+    }
+    section nav ul.active {
+        display: flex;
+    }
+    section nav {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .logo img {
+        width: 200px;
+        height: auto;
+    }
+}
+
+/* Responsive Movie Grid */
+@media (max-width: 900px) {
+    .movie-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+}
+@media (max-width: 600px) {
+    .movie-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    .website-intro h1 {
+        font-size: 2rem;
+    }
+    .website-intro p {
+        font-size: 1rem;
+    }
+    .main-content, .marvel1, .marvel2 {
+        display: none;
+    }
+}
+
+/* Make images scale */
+.movie-card img, .website-intro img, .logo img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
