@@ -1066,25 +1066,51 @@ nav a.active {
 }
 /* Responsive Navigation */
 @media (max-width: 900px) {
-    section nav ul {
+    .nav-toggle {
+        display: block;
+        position: absolute;
+        right: 20px;
+        top: 20px;
+    }
+    nav {
         flex-direction: column;
         align-items: flex-start;
+        padding: 0.5rem 1rem;
+    }
+    nav ul {
+        display: none;
+        flex-direction: column;
+        width: 100%;
         background: rgba(27, 26, 26, 0.98);
         position: absolute;
         top: 60px;
         left: 0;
-        width: 100%;
-        display: none;
+        z-index: 1000;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        border-radius: 0 0 8px 8px;
+        padding: 1rem 0;
     }
-    section nav ul.active {
+    nav ul.active {
         display: flex;
     }
-    section nav {
-        flex-direction: column;
-        align-items: flex-start;
+    nav ul li {
+        width: 100%;
+        justify-content: flex-start;
+        padding: 0.5rem 1.5rem;
+    }
+    .dropdown-content {
+        position: static;
+        min-width: 100%;
+        box-shadow: none;
+        background: rgba(27, 26, 26, 0.98);
+        border-radius: 0;
+        margin-top: 0.5rem;
+    }
+    .dropdown-content a {
+        padding: 10px 20px;
     }
     .logo img {
-        width: 200px;
+        width: 160px;
         height: auto;
     }
 }
@@ -1097,18 +1123,106 @@ nav a.active {
     }
 }
 @media (max-width: 600px) {
-    .movie-grid {
-        grid-template-columns: 1fr;
-        gap: 12px;
+    nav {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 0.5rem 0.5rem;
     }
-    .website-intro h1 {
-        font-size: 2rem;
+    .logo {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 0.5rem;
     }
-    .website-intro p {
+    .logo img {
+        width: 90px;
+        height: auto;
+        margin: 0 auto;
+    }
+    .nav-toggle {
+        display: block;
+        position: static;
+        margin: 0 auto 0.5rem auto;
+        text-align: center;
+    }
+    nav ul {
+        position: static;
+        width: 100%;
+        box-shadow: none;
+        border-radius: 0;
+        padding: 0.5rem 0;
+        background: rgba(27, 26, 26, 0.98);
+    }
+    nav ul li {
+        width: 100%;
+        justify-content: flex-start;
+        padding: 0.5rem 1rem;
+    }
+    .search-container {
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 0.5rem;
+    }
+    .search-form {
+        width: 100%;
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: stretch;
+    }
+    .search-input {
+        width: 100%;
+        font-size: 1rem;
+        padding: 8px 10px;
+    }
+    .search-form button {
+        width: 100%;
+        font-size: 1.1rem;
+        padding: 8px 0;
+    }
+    .dropdown-content {
+        position: static;
+        min-width: 100%;
+        box-shadow: none;
+        background: rgba(27, 26, 26, 0.98);
+        border-radius: 0;
+        margin-top: 0.5rem;
+    }
+    .dropdown-content a {
+        padding: 12px 18px;
         font-size: 1rem;
     }
-    .main-content, .marvel1, .marvel2 {
-        display: none;
+    /* Movie card adjustments for mobile */
+    .movie-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        padding: 0.5rem;
+    }
+    .movie-card {
+        min-width: 0;
+        max-width: 100%;
+        border-radius: 6px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    }
+    .movie-card img {
+        height: 120px;
+        border-radius: 6px 6px 0 0;
+    }
+    .movie-info {
+        padding: 0.5rem 0.4rem;
+    }
+    .movie-info h3 {
+        font-size: 0.95rem;
+        margin-bottom: 0.2rem;
+    }
+    .rating, .release-date {
+        font-size: 0.8rem;
+    }
+    .movie-actions {
+        gap: 4px;
+        margin-top: 6px;
+    }
+    .add-to-watchlist {
+        font-size: 0.8rem;
+        padding: 4px 0;
     }
 }
 
