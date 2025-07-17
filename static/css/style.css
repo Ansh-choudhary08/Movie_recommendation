@@ -1118,3 +1118,45 @@ nav a.active {
     height: auto;
     display: block;
 }
+
+/* Hamburger menu button styles */
+.nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    z-index: 1100;
+}
+
+/* Responsive styles for nav */
+@media (max-width: 900px) {
+    .nav-toggle {
+        display: block;
+        position: absolute;
+        right: 20px;
+        top: 20px;
+    }
+    nav ul {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background: rgba(27, 26, 26, 0.98);
+        position: absolute;
+        top: 60px;
+        left: 0;
+        z-index: 1000;
+    }
+    nav ul.active {
+        display: flex;
+    }
+    nav {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .logo img {
+        width: 200px;
+        height: auto;
+    }
+}

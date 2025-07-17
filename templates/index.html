@@ -12,8 +12,13 @@
     <section>
         <nav>
             <div class="logo">
-                <img width="500" height="95" src="https://pickamovieforme.b-cdn.net/wp-content/uploads/2020/09/logo_c.png" class="custom-logo" alt="PickAMovieForMe.com" >
+                <a href="{{ url_for('hello_world') }}">
+                    <img width="500" height="95" src="https://pickamovieforme.b-cdn.net/wp-content/uploads/2020/09/logo_c.png" class="custom-logo" alt="PickAMovieForMe.com">
+                </a>
             </div>
+            <button class="nav-toggle" aria-label="Toggle navigation">
+                <i class="fa fa-bars"></i>
+            </button>
             <ul>
                 <li class="search-container">
                     <form action="{{ url_for('search_movies') }}" method="GET" class="search-form" onsubmit="return validateSearch(this);">
@@ -355,6 +360,17 @@
         }
         return true;
     }
+
+    // Responsive nav toggle
+    document.addEventListener('DOMContentLoaded', function() {
+        const navToggle = document.querySelector('.nav-toggle');
+        const navUl = document.querySelector('nav ul');
+        if (navToggle && navUl) {
+            navToggle.addEventListener('click', function() {
+                navUl.classList.toggle('active');
+            });
+        }
+    });
     </script>
 </body>
 </html>
