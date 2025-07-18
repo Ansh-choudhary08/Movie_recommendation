@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
-    <!-- Include the same navigation as other pages -->
     {% include 'nav.html' %}
 
     <main class="actor-container">
@@ -42,7 +41,6 @@
             <h2>Known For</h2>
             <div class="movie-grid">
                 {% for movie in movies %}
-                <!-- Use the same movie card template as other pages -->
                 {% include 'movie_card.html' %}
                 {% endfor %}
             </div>
@@ -50,7 +48,15 @@
     </main>
 
     <script>
-        // Include the same JavaScript functions as other pages
+    document.addEventListener('DOMContentLoaded', function() {
+      const navToggle = document.querySelector('.nav-toggle');
+      const navUl = document.querySelector('nav ul');
+      if (navToggle && navUl) {
+        navToggle.addEventListener('click', function() {
+          navUl.classList.toggle('active');
+        });
+      }
+    });
     </script>
 </body>
 </html> 

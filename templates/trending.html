@@ -9,23 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
-    <nav>
-        <div class="logo">
-            <img width="500" height="95" src="https://pickamovieforme.b-cdn.net/wp-content/uploads/2020/09/logo_c.png" class="custom-logo" alt="PickAMovieForMe.com">
-        </div>
-        <ul>
-            <li class="search-container">
-                <form action="{{ url_for('search_movies') }}" method="GET" class="search-form" onsubmit="return validateSearch(this);">
-                    <input type="text" name="query" placeholder="Search movies..." class="search-input" required minlength="1">
-                    <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
-                </form>
-            </li>
-            <li><a href="{{ url_for('hello_world') }}">Home</a></li>
-            <li><a href="{{ url_for('watchlist') }}"><i class="fa-regular fa-clock"></i> Watch List</a></li>
-            <li><a href="{{ url_for('login') }}">Login</a></li>
-        </ul>
-    </nav>
-
+    {% include 'nav.html' %}
     <main class="trending-container">
         <div class="trending-header">
             <h1>Trending Movies</h1>
@@ -40,7 +24,6 @@
                 </a>
             </div>
         </div>
-
         <div class="movie-grid">
             {% for movie in movies %}
             <div class="movie-card">
@@ -69,7 +52,17 @@
             {% endfor %}
         </div>
     </main>
-
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const navToggle = document.querySelector('.nav-toggle');
+      const navUl = document.querySelector('nav ul');
+      if (navToggle && navUl) {
+        navToggle.addEventListener('click', function() {
+          navUl.classList.toggle('active');
+        });
+      }
+    });
+    </script>
     <script>
         // Add the same addToWatchlist and notification functions
         async function addToWatchlist(button, movieId) {

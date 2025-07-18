@@ -10,17 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
-    <nav>
-        <div class="logo">
-            <img width="500" height="95" src="https://pickamovieforme.b-cdn.net/wp-content/uploads/2020/09/logo_c.png" class="custom-logo" alt="PickAMovieForMe.com">
-        </div>
-        <ul>
-            <li><a href="{{ url_for('hello_world') }}">Home</a></li>
-            <li><a href="{{ url_for('watchlist') }}"><i class="fa-regular fa-clock"></i> Watch List</a></li>
-            <li><a href="{{ url_for('login') }}">Login</a></li>
-        </ul>
-    </nav>
-
+    {% include 'nav.html' %}
     <main class="movie-details-container">
         <div class="movie-backdrop" style="background-image: url('https://image.tmdb.org/t/p/original{{ movie.backdrop_path }}')">
             <div class="backdrop-overlay"></div>
@@ -86,6 +76,17 @@
         function showNotification(message, type) {
             // ... (same as in search_results.html)
         }
+    </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const navToggle = document.querySelector('.nav-toggle');
+      const navUl = document.querySelector('nav ul');
+      if (navToggle && navUl) {
+        navToggle.addEventListener('click', function() {
+          navUl.classList.toggle('active');
+        });
+      }
+    });
     </script>
 </body>
 </html> 

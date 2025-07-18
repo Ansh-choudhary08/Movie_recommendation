@@ -9,245 +9,200 @@
 
 </head>
 <body>
+    {% include 'nav.html' %}
     <section>
-        <nav>
-            <div class="logo">
-                <a href="{{ url_for('hello_world') }}">
-                    <img width="500" height="95" src="https://pickamovieforme.b-cdn.net/wp-content/uploads/2020/09/logo_c.png" class="custom-logo" alt="PickAMovieForMe.com">
-                </a>
-            </div>
-            <button class="nav-toggle" aria-label="Toggle navigation">
-                <i class="fa fa-bars"></i>
-            </button>
-            <ul>
-                <li class="search-container">
-                    <form action="{{ url_for('search_movies') }}" method="GET" class="search-form" onsubmit="return validateSearch(this);">
-                        <input type="text" name="query" placeholder="Search movies..." class="search-input" required minlength="1">
-                        <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
-                    </form>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropbtn">Top Actor   |</a>
-                    <div class="dropdown-content">
-                        <a href="{{ url_for('actor_movies', actor_id=3223) }}">Robert Downey Jr.</a>
-                        <a href="{{ url_for('actor_movies', actor_id=6193) }}">Leonardo DiCaprio</a>
-                        <a href="{{ url_for('actor_movies', actor_id=1892) }}">Matt Damon</a>
-                        <a href="{{ url_for('actor_movies', actor_id=2037) }}">Christian Bale</a>
-                        <a href="{{ url_for('actor_movies', actor_id=287) }}">Brad Pitt</a>
-                        <a href="{{ url_for('actor_movies', actor_id=192) }}">Morgan Freeman</a>
-                        <a href="{{ url_for('actor_movies', actor_id=31) }}">Tom Hanks</a>
-                        <a href="{{ url_for('actor_movies', actor_id=5292) }}">Denzel Washington</a>
-                        <a href="{{ url_for('actor_movies', actor_id=1158) }}">Al Pacino</a>
-                        <a href="{{ url_for('actor_movies', actor_id=380) }}">Robert De Niro</a>
-                    </div>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropbtn">Top Genre   |</a>
-                    <div class="dropdown-content">
-                        <a href="{{ url_for('genre_movies', genre_id=28) }}">Action</a>
-                        <a href="{{ url_for('genre_movies', genre_id=12) }}">Adventure</a>
-                        <a href="{{ url_for('genre_movies', genre_id=16) }}">Animation</a>
-                        <a href="{{ url_for('genre_movies', genre_id=35) }}">Comedy</a>
-                        <a href="{{ url_for('genre_movies', genre_id=80) }}">Crime</a>
-                        <a href="{{ url_for('genre_movies', genre_id=18) }}">Drama</a>
-                        <a href="{{ url_for('genre_movies', genre_id=14) }}">Fantasy</a>
-                        <a href="{{ url_for('genre_movies', genre_id=27) }}">Horror</a>
-                        <a href="{{ url_for('genre_movies', genre_id=9648) }}">Mystery</a>
-                        <a href="{{ url_for('genre_movies', genre_id=10749) }}">Romance</a>
-                        <a href="{{ url_for('genre_movies', genre_id=878) }}">Sci-Fi</a>
-                        <a href="{{ url_for('genre_movies', genre_id=53) }}">Thriller</a>
-                    </div>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropbtn">Trending   |</a>
-                    <div class="dropdown-content">
-                        <a href="{{ url_for('trending_movies', time_window='day') }}">Today</a>
-                        <a href="{{ url_for('trending_movies', time_window='week') }}">This Week</a>
-                    </div>
-                </li>
-                
-                <li><a href="{{ url_for('watchlist') }}"><i class="fa-regular fa-clock"></i>  Watch List</a></li>
-                <li><a href="{{ url_for('login') }}">Login</a></li>
-            </ul>
-        </nav>
-        <div class="slide1">
-            <div class="black_screen">
-                <img class="black" src="{{ url_for('static', filename='images/black.jpeg') }}" alt="Black background">
-            </div>
-            <div class="website-intro">
-                <h1>Movie Finder Website</h1>
-                <p>Discover your next favorite movie with our intelligent movie recommendation system. 
-                   Browse through thousands of titles, get personalized suggestions based on your preferences, 
-                   and create your own watchlist. Whether you're in the mood for action, romance, or thriller, 
-                   we've got you covered!</p>
-                <button class="explore-btn">Explore Movies</button>
-            </div>
-            <div class="main-content">
-                <img src="{{ url_for('static', filename='images/marvel1.jpeg') }}" alt="Marvel heroes" style="z-index: 3;" class="marvel1">
-                <img src="{{ url_for('static', filename='images/marvel2.jpeg') }}" alt="Marvel heroes" style="z-index: 2;" class="marvel2">
+        <div class="hero-section animated-hero">
+            <div class="hero-bg"></div>
+            <div class="hero-content">
+                <h1 class="hero-title">Welcome to <span class="highlight">Movie Finder</span></h1>
+                <p class="hero-desc">Discover your next favorite movie with our intelligent recommendation system.<br>
+                Browse thousands of titles, get personalized suggestions, and create your own watchlist.<br>
+                <span class="hero-cta">Ready for a movie night?</span></p>
+                <a href="#trending" class="explore-btn animated-btn">Explore Movies</a>
             </div>
         </div>
-
-        <div class="trending-movies">
-            <h2>Trending Movies</h2>
-            <div class="trending-header">
-                <h3>Popular This Week</h3>
-                <a href="{{ url_for('trending_movies', time_window='week') }}" class="show-more-btn">
-                    <i class="fas fa-film"></i> Show More
-                </a>
-            </div>
-            <div class="movie-grid">
-                {% for movie in movies[:6] %}
-                <div class="movie-card">
-                    <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}">
-                    <div class="movie-info">
-                        <h3>{{ movie.title }}</h3>
-                        <p class="rating">⭐ {{ movie.vote_average|round(1) }}/10</p>
-                        <p class="release-date">{{ movie.release_date }}</p>
-                        <div class="movie-actions">
-                            <button class="add-to-watchlist" onclick="addToWatchlist(this, '{{ movie.id }}')">
-                                <i class="fas fa-plus"></i> Add to Watchlist
-                            </button>
-                            <button class="add-to-watchlist" class="details-btn">
-                            <a href="{{ url_for('movie_details', movie_id=movie.id) }}" class="details-btn">
-                                <i class="fas fa-info-circle"></i> View Details
-                            </a>
-                        </button>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-
-        <!-- Action Movies Section -->
-        <div class="movie-section">
-            <div class="section-header">
-                <h3>Action Movies</h3>
-                <a href="{{ url_for('genre_movies', genre_id=28) }}" class="show-more-btn">
-                    <i class="fas fa-film"></i> Show More
-                </a>
-            </div>
-            <div class="movie-grid">
-                {% for movie in action_movies %}
-                <div class="movie-card">
-                    <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}">
-                    <div class="movie-info">
-                        <h3>{{ movie.title }}</h3>
-                        <p class="rating">⭐ {{ movie.vote_average|round(1) }}/10</p>
-                        <p class="release-date">{{ movie.release_date }}</p>
-                        <div class="movie-actions">
-                            <button class="add-to-watchlist" onclick="addToWatchlist(this, '{{ movie.id }}')">
-                                <i class="fas fa-plus"></i> Add to Watchlist
-                            </button>
-                            <button class="add-to-watchlist" class="details-btn">
-                                <a href="{{ url_for('movie_details', movie_id=movie.id) }}" class="details-btn">
-                                    <i class="fas fa-info-circle"></i> View Details
-                                </a>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-
-        <!-- Adventure Movies Section -->
-        <div class="movie-section">
-            <div class="section-header">
-                <h3>Adventure Movies</h3>
-                <a href="{{ url_for('genre_movies', genre_id=12) }}" class="show-more-btn">
-                    <i class="fas fa-film"></i> Show More
-                </a>
-            </div>
-            <div class="movie-grid">
-                {% for movie in adventure_movies %}
-                <div class="movie-card">
-                    <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}">
-                    <div class="movie-info">
-                        <h3>{{ movie.title }}</h3>
-                        <p class="rating">⭐ {{ movie.vote_average|round(1) }}/10</p>
-                        <p class="release-date">{{ movie.release_date }}</p>
-                        <div class="movie-actions">
-                            <button class="add-to-watchlist" onclick="addToWatchlist(this, '{{ movie.id }}')">
-                                <i class="fas fa-plus"></i> Add to Watchlist
-                            </button>
-                            <button class="add-to-watchlist" class="details-btn">
-                                <a href="{{ url_for('movie_details', movie_id=movie.id) }}" class="details-btn">
-                                    <i class="fas fa-info-circle"></i> View Details
-                                </a>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-
-        <!-- Romance Movies Section -->
-        <div class="movie-section">
-            <div class="section-header">
-                <h3>Romance Movies</h3>
-                <a href="{{ url_for('genre_movies', genre_id=10749) }}" class="show-more-btn">
-                    <i class="fas fa-film"></i> Show More
-                </a>
-            </div>
-            <div class="movie-grid">
-                {% for movie in romance_movies %}
-                <div class="movie-card">
-                    <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}">
-                    <div class="movie-info">
-                        <h3>{{ movie.title }}</h3>
-                        <p class="rating">⭐ {{ movie.vote_average|round(1) }}/10</p>
-                        <p class="release-date">{{ movie.release_date }}</p>
-                        <div class="movie-actions">
-                            <button class="add-to-watchlist" onclick="addToWatchlist(this, '{{ movie.id }}')">
-                                <i class="fas fa-plus"></i> Add to Watchlist
-                            </button>
-                            <button class="add-to-watchlist" class="details-btn">
-                                <a href="{{ url_for('movie_details', movie_id=movie.id) }}" class="details-btn">
-                                    <i class="fas fa-info-circle"></i> View Details
-                                </a>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-
-        <!-- Comedy Movies Section -->
-        <div class="movie-section">
-            <div class="section-header">
-                <h3>Comedy Movies</h3>
-                <a href="{{ url_for('genre_movies', genre_id=35) }}" class="show-more-btn">
-                    <i class="fas fa-film"></i> Show More
-                </a>
-            </div>
-            <div class="movie-grid">
-                {% for movie in comedy_movies %}
-                <div class="movie-card">
-                    <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}">
-                    <div class="movie-info">
-                        <h3>{{ movie.title }}</h3>
-                        <p class="rating">⭐ {{ movie.vote_average|round(1) }}/10</p>
-                        <p class="release-date">{{ movie.release_date }}</p>
-                        <div class="movie-actions">
-                            <button class="add-to-watchlist" onclick="addToWatchlist(this, '{{ movie.id }}')">
-                                <i class="fas fa-plus"></i> Add to Watchlist
-                            </button>
-                            <button class="add-to-watchlist">
-                            <a href="{{ url_for('movie_details', movie_id=movie.id) }}" class="details-btn">
-                                <i class="fas fa-info-circle"></i> View Details
-                            </a>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
+        <div class="hero-divider">
+            <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 0h1440v30c-240 40-480 40-720 0S240 0 0 30V0z" fill="#181c2f"/>
+            </svg>
         </div>
     </section>
+
+    <div class="trending-movies" id="trending">
+        <h2>Trending Movies</h2>
+        <div class="trending-header">
+            <h3>Popular This Week</h3>
+            <a href="{{ url_for('trending_movies', time_window='week') }}" class="show-more-btn">
+                <i class="fas fa-film"></i> Show More
+            </a>
+        </div>
+        <div class="movie-grid">
+            {% for movie in movies[:6] %}
+            <div class="movie-card">
+                <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}">
+                <div class="movie-info">
+                    <h3>{{ movie.title }}</h3>
+                    <p class="rating">⭐ {{ movie.vote_average|round(1) }}/10</p>
+                    <p class="release-date">{{ movie.release_date }}</p>
+                    <div class="movie-actions">
+                        <button class="add-to-watchlist" onclick="addToWatchlist(this, '{{ movie.id }}')">
+                            <i class="fas fa-plus"></i> Add to Watchlist
+                        </button>
+                        <button class="add-to-watchlist" class="details-btn">
+                        <a href="{{ url_for('movie_details', movie_id=movie.id) }}" class="details-btn">
+                            <i class="fas fa-info-circle"></i> View Details
+                        </a>
+                    </button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Action Movies Section -->
+    <div class="movie-section">
+        <div class="section-header">
+            <h3>Action Movies</h3>
+            <a href="{{ url_for('genre_movies', genre_id=28) }}" class="show-more-btn">
+                <i class="fas fa-film"></i> Show More
+            </a>
+        </div>
+        <div class="movie-grid">
+            {% if action_movies %}
+                {% for movie in action_movies %}
+                    <div class="movie-card">
+                        <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}">
+                        <div class="movie-info">
+                            <h3>{{ movie.title }}</h3>
+                            <p class="rating">⭐ {{ movie.vote_average|round(1) }}/10</p>
+                            <p class="release-date">{{ movie.release_date }}</p>
+                            <div class="movie-actions">
+                                <button class="add-to-watchlist" onclick="addToWatchlist(this, '{{ movie.id }}')">
+                                    <i class="fas fa-plus"></i> Add to Watchlist
+                                </button>
+                                <button class="add-to-watchlist" class="details-btn">
+                                    <a href="{{ url_for('movie_details', movie_id=movie.id) }}" class="details-btn">
+                                        <i class="fas fa-info-circle"></i> View Details
+                                    </a>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-movies-message">No movies found.</div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Adventure Movies Section -->
+    <div class="movie-section">
+        <div class="section-header">
+            <h3>Adventure Movies</h3>
+            <a href="{{ url_for('genre_movies', genre_id=12) }}" class="show-more-btn">
+                <i class="fas fa-film"></i> Show More
+            </a>
+        </div>
+        <div class="movie-grid">
+            {% if adventure_movies %}
+                {% for movie in adventure_movies %}
+                    <div class="movie-card">
+                        <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}">
+                        <div class="movie-info">
+                            <h3>{{ movie.title }}</h3>
+                            <p class="rating">⭐ {{ movie.vote_average|round(1) }}/10</p>
+                            <p class="release-date">{{ movie.release_date }}</p>
+                            <div class="movie-actions">
+                                <button class="add-to-watchlist" onclick="addToWatchlist(this, '{{ movie.id }}')">
+                                    <i class="fas fa-plus"></i> Add to Watchlist
+                                </button>
+                                <button class="add-to-watchlist" class="details-btn">
+                                    <a href="{{ url_for('movie_details', movie_id=movie.id) }}" class="details-btn">
+                                        <i class="fas fa-info-circle"></i> View Details
+                                    </a>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-movies-message">No movies found.</div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Romance Movies Section -->
+    <div class="movie-section">
+        <div class="section-header">
+            <h3>Romance Movies</h3>
+            <a href="{{ url_for('genre_movies', genre_id=10749) }}" class="show-more-btn">
+                <i class="fas fa-film"></i> Show More
+            </a>
+        </div>
+        <div class="movie-grid">
+            {% if romance_movies %}
+                {% for movie in romance_movies %}
+                    <div class="movie-card">
+                        <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}">
+                        <div class="movie-info">
+                            <h3>{{ movie.title }}</h3>
+                            <p class="rating">⭐ {{ movie.vote_average|round(1) }}/10</p>
+                            <p class="release-date">{{ movie.release_date }}</p>
+                            <div class="movie-actions">
+                                <button class="add-to-watchlist" onclick="addToWatchlist(this, '{{ movie.id }}')">
+                                    <i class="fas fa-plus"></i> Add to Watchlist
+                                </button>
+                                <button class="add-to-watchlist" class="details-btn">
+                                    <a href="{{ url_for('movie_details', movie_id=movie.id) }}" class="details-btn">
+                                        <i class="fas fa-info-circle"></i> View Details
+                                    </a>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-movies-message">No movies found.</div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Comedy Movies Section -->
+    <div class="movie-section">
+        <div class="section-header">
+            <h3>Comedy Movies</h3>
+            <a href="{{ url_for('genre_movies', genre_id=35) }}" class="show-more-btn">
+                <i class="fas fa-film"></i> Show More
+            </a>
+        </div>
+        <div class="movie-grid">
+            {% if comedy_movies %}
+                {% for movie in comedy_movies %}
+                    <div class="movie-card">
+                        <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}">
+                        <div class="movie-info">
+                            <h3>{{ movie.title }}</h3>
+                            <p class="rating">⭐ {{ movie.vote_average|round(1) }}/10</p>
+                            <p class="release-date">{{ movie.release_date }}</p>
+                            <div class="movie-actions">
+                                <button class="add-to-watchlist" onclick="addToWatchlist(this, '{{ movie.id }}')">
+                                    <i class="fas fa-plus"></i> Add to Watchlist
+                                </button>
+                                <button class="add-to-watchlist">
+                                    <a href="{{ url_for('movie_details', movie_id=movie.id) }}" class="details-btn">
+                                        <i class="fas fa-info-circle"></i> View Details
+                                    </a>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-movies-message">No movies found.</div>
+            {% endif %}
+        </div>
+    </div>
     <footer class="footer">
         <div class="black_screen_footer">
             <img src="{{ url_for('static', filename='images/black.jpeg') }}" alt="Black background">
@@ -361,15 +316,14 @@
         return true;
     }
 
-    // Responsive nav toggle
     document.addEventListener('DOMContentLoaded', function() {
-        const navToggle = document.querySelector('.nav-toggle');
-        const navUl = document.querySelector('nav ul');
-        if (navToggle && navUl) {
-            navToggle.addEventListener('click', function() {
-                navUl.classList.toggle('active');
-            });
-        }
+      const navToggle = document.querySelector('.nav-toggle');
+      const navUl = document.querySelector('nav ul');
+      if (navToggle && navUl) {
+        navToggle.addEventListener('click', function() {
+          navUl.classList.toggle('active');
+        });
+      }
     });
     </script>
 </body>

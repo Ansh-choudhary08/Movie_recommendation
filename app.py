@@ -12,6 +12,7 @@ from flask_sqlalchemy import SQLAlchemy
 from models import db, User, WatchlistItem
 from werkzeug.exceptions import HTTPException
 import traceback
+import time
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
@@ -63,20 +64,25 @@ login_manager.login_message_category = 'error'
 def load_user(user_id: str) -> User:
     return User.query.get(int(user_id))
 
-def fetch_tmdb_data(endpoint, params=None):
-    """Fetch data from TMDB API with error handling"""
-    try:
-        url = f"{TMDB_BASE_URL}/{endpoint}"
-        headers = {
-            "Authorization": f"Bearer {TMDB_ACCESS_TOKEN}",
-            "accept": "application/json"
-        }
-        response = requests.get(url, headers=headers, params=params)
-        response.raise_for_status()
-        return response.json()
-    except requests.RequestException as e:
-        logger.error(f"TMDB API error: {e}")
-        return None
+def fetch_tmdb_data(endpoint, params=None, retries=2):
+    """Fetch data from TMDB API with error handling and retry logic"""
+    for attempt in range(retries + 1):
+        try:
+            url = f"{TMDB_BASE_URL}/{endpoint}"
+            headers = {
+                "Authorization": f"Bearer {TMDB_ACCESS_TOKEN}",
+                "accept": "application/json"
+            }
+            response = requests.get(url, headers=headers, params=params)
+            response.raise_for_status()
+            data = response.json()
+            return data
+        except requests.RequestException as e:
+            logger.error(f"TMDB API error: {e}")
+            if attempt < retries:
+                time.sleep(1)  # Wait a bit before retrying
+            else:
+                return None
 
 @app.route("/")
 def hello_world():
@@ -86,44 +92,47 @@ def hello_world():
         trending_movies = trending.get('results', []) if trending else []
 
         # Fetch movies by genre
-        action_movies = fetch_tmdb_data('discover/movie', {
+        action = fetch_tmdb_data('discover/movie', {
             'with_genres': 28,  # Action
             'sort_by': 'popularity.desc'
-        }).get('results', [])[:6]
+        })
+        action_movies = action.get('results', [])[:6] if action else []
 
-        adventure_movies = fetch_tmdb_data('discover/movie', {
+        adventure = fetch_tmdb_data('discover/movie', {
             'with_genres': 12,  # Adventure
             'sort_by': 'popularity.desc'
-        }).get('results', [])[:6]
+        })
+        adventure_movies = adventure.get('results', [])[:6] if adventure else []
 
-        romance_movies = fetch_tmdb_data('discover/movie', {
+        romance = fetch_tmdb_data('discover/movie', {
             'with_genres': 10749,  # Romance
             'sort_by': 'popularity.desc'
-        }).get('results', [])[:6]
+        })
+        romance_movies = romance.get('results', [])[:6] if romance else []
 
-        comedy_movies = fetch_tmdb_data('discover/movie', {
+        comedy = fetch_tmdb_data('discover/movie', {
             'with_genres': 35,  # Comedy
             'sort_by': 'popularity.desc'
-        }).get('results', [])[:6]
+        })
+        comedy_movies = comedy.get('results', [])[:6] if comedy else []
 
-        # Format all movie data
-        for movies in [trending_movies, action_movies, adventure_movies, romance_movies, comedy_movies]:
-            for movie in movies:
-                movie['release_date'] = movie.get('release_date', 'N/A')
-                movie['vote_average'] = movie.get('vote_average', 0)
-                if not movie.get('poster_path'):
-                    movie['poster_path'] = None
-
+        # Always pass lists to the template, even if empty
         return render_template('index.html', 
-                             movies=trending_movies[:6],
-                             action_movies=action_movies,
-                             adventure_movies=adventure_movies,
-                             romance_movies=romance_movies,
-                             comedy_movies=comedy_movies)
+                             movies=trending_movies[:6] if trending_movies else [],
+                             action_movies=action_movies if action_movies else [],
+                             adventure_movies=adventure_movies if adventure_movies else [],
+                             romance_movies=romance_movies if romance_movies else [],
+                             comedy_movies=comedy_movies if comedy_movies else [])
 
     except Exception as e:
         logger.error(f"Error loading homepage: {e}")
-        return render_template('500.html'), 500
+        # Always render the page with empty lists if there's an error
+        return render_template('index.html', 
+                             movies=[],
+                             action_movies=[],
+                             adventure_movies=[],
+                             romance_movies=[],
+                             comedy_movies=[])
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():

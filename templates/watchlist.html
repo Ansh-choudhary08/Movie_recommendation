@@ -29,31 +29,7 @@
         <div class="movie-grid">
             {% if movies %}
                 {% for movie in movies %}
-                <div class="movie-card">
-                    <div class="movie-poster">
-                        {% if movie.poster_path %}
-                        <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}">
-                        {% else %}
-                        <div class="no-poster">
-                            <i class="fas fa-film"></i>
-                            <span>No poster available</span>
-                        </div>
-                        {% endif %}
-                        <div class="movie-actions">
-                            <button class="watch-btn" title="Mark as watched">
-                                <i class="fas fa-check"></i>
-                            </button>
-                            <button class="remove-btn" title="Remove from watchlist" data-movie-id="{{ movie.id }}">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="movie-info">
-                        <h3>{{ movie.title }}</h3>
-                        <p class="movie-meta">{{ movie.release_date.split('-')[0] }} | ⭐ {{ movie.vote_average|round(1) }}/10</p>
-                        <p class="added-date">Added: {{ movie.added_date }}</p>
-                    </div>
-                </div>
+                {% include 'movie_card.html' %}
                 {% endfor %}
             {% else %}
                 <div class="empty-watchlist">
@@ -65,6 +41,17 @@
     </main>
 
     <script src="{{ url_for('static', filename='js/watchlist.js') }}"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const navToggle = document.querySelector('.nav-toggle');
+      const navUl = document.querySelector('nav ul');
+      if (navToggle && navUl) {
+        navToggle.addEventListener('click', function() {
+          navUl.classList.toggle('active');
+        });
+      }
+    });
+    </script>
 </body>
 
 </html>
